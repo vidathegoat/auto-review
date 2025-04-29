@@ -45,6 +45,7 @@ No IDE required!
     ├── auto-review.ipynb          # Main notebook script
     ├── cookies.json               # Saved cookies (excluded by .gitignore)
     ├── .gitignore                 # Git ignore config
+    ├── LICENSE                    # Contains MIT license info
     └── README.md                  # You are here!
 
 ---
