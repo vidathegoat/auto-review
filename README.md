@@ -38,17 +38,13 @@ These instructions will help you get a local copy of the project up and running.
 Run this in your terminal:
 
     git clone https://github.com/vidathegoat/auto-review.git
-    cd auto--review
+    cd auto-review
 
 ### 2. 📦 Install Dependencies
 
 If you're using the Jupyter Notebook (`.ipynb`), run **Cell 0** to install everything automatically:
 
     !pip install selenium bs4 pandas requests pyclip
-
-Or install manually with the provided `requirements.txt`:
-
-    pip install -r requirements.txt
 
 > 💡 Make sure you have Google Chrome and a matching version of ChromeDriver installed:
 > https://www.google.com/chrome/
@@ -58,7 +54,7 @@ Or install manually with the provided `requirements.txt`:
 
 Launch the notebook interface with:
 
-    jupyter notebook AutoManualReview.ipynb
+    jupyter notebook auto-review.ipynb
 
 No IDE required!
 
