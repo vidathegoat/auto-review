@@ -37,8 +37,8 @@ These instructions will help you get a local copy of the project up and running.
 
 Run this in your terminal:
 
-    git clone https://github.com/your-username/auto-manual-review.git
-    cd auto-manual-review
+    git clone https://github.com/vidathegoat/auto-review.git
+    cd auto--review
 
 ### 2. 📦 Install Dependencies
 
