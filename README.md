@@ -72,6 +72,8 @@ No IDE required!
 
 MIT License © 2025 Vida
 
+> This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
 ---
 
 ## 🙏 Acknowledgments
