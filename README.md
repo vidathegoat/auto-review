@@ -4,6 +4,31 @@ A Jupyter Notebook utility that streamlines the manual review process for flagge
 
 ---
 
+## 💻 Environment Setup
+
+To run this notebook smoothly, we recommend the following environment:
+
+### 🧠 IDE
+- **[Visual Studio Code](https://code.visualstudio.com/)** (VS Code)  
+  A lightweight, powerful editor that supports Jupyter notebooks out of the box.
+
+### 🧩 Required Extensions
+- **Jupyter** extension (published by Microsoft)  
+  - Go to Extensions `(Ctrl+Shift+X)` → Search for `Jupyter` → Install.
+- (Optional) **Python** extension (also by Microsoft) for syntax highlighting and Python support.
+
+### 🧪 Python Environment
+- Python version **3.9+** recommended.
+- Use `venv`, `conda`, or your preferred environment manager to isolate dependencies.
+
+### 🔁 Kernel Instructions
+Once you open the notebook:
+1. Click the top-right **kernel selector** (it may say “Python 3” or “Select Kernel”).
+2. Choose the environment where you've installed your requirements.
+3. If no environment appears, make sure it’s activated and Python is installed.
+
+---
+
 ## 🚀 Getting Started
 
 These instructions will help you get a local copy of the project up and running.
