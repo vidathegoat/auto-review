@@ -4,3 +4,5 @@ pandas
 requests
 pyclip
 ipython
+ipyaggrid
+urllib3
