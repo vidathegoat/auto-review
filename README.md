@@ -1,107 +1,99 @@
-# 🛠️ Auto Manual Review Tool
+# Auto Manual Review Tool
 
-A Jupyter Notebook utility that streamlines the manual review process for flagged users on kog.tw. It automates data scraping, cookie management, status checks, and copy/paste message generation — all in one interactive and beginner-friendly workflow.
-
----
-
-## 💻 Environment Setup
-
-To run this notebook smoothly, we recommend the following environment:
-
-### 🧠 IDE
-- **[Visual Studio Code](https://code.visualstudio.com/)** (VS Code)  
-  A lightweight, powerful editor that supports Jupyter notebooks out of the box.
-
-### 🧩 Required Extensions
-- **Jupyter** extension (published by Microsoft)  
-  - Go to Extensions `(Ctrl+Shift+X)` → Search for `Jupyter` → Install.
-- (Optional) **Python** extension (also by Microsoft) for syntax highlighting and Python support.
-
-### 🧪 Python Environment
-- Python version **3.9+** recommended.
-- Use `venv`, `conda`, or your preferred environment manager to isolate dependencies.
-
-### 🔁 Kernel Instructions
-Once you open the notebook:
-1. Click the top-right **kernel selector** (it may say “Python 3” or “Select Kernel”).
-2. Choose the environment where you've installed your requirements.
-3. If no environment appears, make sure it’s activated and Python is installed.
+A utility for streamlining the manual review process for flagged users on kog.tw. It automates data scraping, cookie management, status checks, and Discord message generation. Available as both a Jupyter Notebook (interactive) and a standalone Python script.
 
 ---
 
-## 🚀 Getting Started
+## Environment Setup
 
-These instructions will help you get a local copy of the project up and running.
+### IDE
+- **[Visual Studio Code](https://code.visualstudio.com/)** recommended
+  - Install the **Jupyter** extension (by Microsoft) for notebook support: `Ctrl+Shift+X` → search `Jupyter`
 
-### 1. 📥 Clone the Repository
-
-Run this in your terminal:
-
-    git clone https://github.com/vidathegoat/auto-review.git
-    cd auto-review
-
-### 2. 📦 Install Dependencies
-
-If you're using the Jupyter Notebook (`.ipynb`), run **Cell 0** to install everything automatically:
-
-    !pip install selenium bs4 pandas requests pyclip
-
-> 💡 Make sure you have Google Chrome and a matching version of ChromeDriver installed:
-> https://www.google.com/chrome/
-> https://chromedriver.chromium.org/downloads
-
-### 3. ▶️ Run the Notebook
-
-Launch the notebook interface with:
-
-    jupyter notebook auto-review.ipynb
-
-No IDE required!
+### Python
+- Python **3.9+** required
+- Use `venv`, `conda`, or your preferred environment manager
 
 ---
 
-## 📁 Project Structure
+## Getting Started
 
-    .
-    ├── auto-review.ipynb          # Main notebook script
-    ├── cookies.json               # Saved cookies (excluded by .gitignore)
-    ├── .gitignore                 # Git ignore config
-    ├── LICENSE                    # Contains MIT license info
-    └── README.md                  # You are here!
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/vidathegoat/auto-review.git
+cd auto-review
+```
+
+### 2. Install Dependencies
+
+```bash
+pip install undetected-chromedriver curl_cffi beautifulsoup4 pandas pyperclip ipywidgets ipyaggrid
+```
+
+| Package | Purpose |
+|---|---|
+| `undetected-chromedriver` | Browser automation for login (bypasses bot detection) |
+| `curl_cffi` | HTTP requests with browser impersonation |
+| `beautifulsoup4` | HTML parsing |
+| `pandas` | Table display in notebook |
+| `pyperclip` | Copy generated message to clipboard |
+| `ipywidgets` / `ipyaggrid` | Interactive UI elements in notebook |
+
+> Google Chrome must be installed. `undetected-chromedriver` manages the matching ChromeDriver version automatically.
+
+Alternatively, run **Cell 4** in the notebook to install everything automatically.
+
+### 3. Run
+
+**Notebook (interactive):**
+```bash
+jupyter notebook auto-review.ipynb
+```
+
+**Script (CLI):**
+```bash
+python auto-review.py
+```
 
 ---
 
-## ⚙️ Features
+## Project Structure
 
-✅ Scrapes player migration data by reference number  
-✅ Checks account registration status  
-✅ Generates formatted messages for Discord moderators  
-✅ Matches player IPs against usernames using a hidden API  
-✅ Displays results in clean, interactive tables  
-✅ Caches session cookies to skip login for future runs  
-
----
-
-## 🧠 Tips
-
-- If the site changes, re-check selectors in BeautifulSoup.
-- If ChromeDriver breaks, re-download the version that matches your browser.
-- You can re-run any cell without restarting the notebook unless an error interrupts execution.
+```
+.
+├── auto-review.ipynb      # Interactive notebook version
+├── auto-review.py         # Standalone CLI script
+├── cookies.json           # Saved session cookies (git-ignored)
+├── debug_output/          # Debug HTML snapshots (git-ignored)
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 ---
 
-## 🧾 License
+## Features
+
+- Scrapes player migration data by reference number
+- Checks account registration and migration/ban status
+- Matches player IPs against usernames via internal API
+- Generates formatted Discord messages for moderators
+- Caches session cookies to skip login on subsequent runs
+- Saves raw HTML snapshots to `debug_output/` for troubleshooting
+
+---
+
+## Tips
+
+- If the site layout changes, re-check the BeautifulSoup selectors in the scraping functions.
+- If your Chrome version updates and the driver breaks, reinstalling `undetected-chromedriver` usually fixes it.
+- In the notebook, individual cells can be re-run without restarting unless an error interrupts execution.
+
+---
+
+## License
 
 MIT License © 2025 Vida
 
-> This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- [kog.tw](https://kog.tw) for providing the platform
-- [Selenium](https://www.selenium.dev/) for browser automation
-- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) for HTML parsing
-- [pandas](https://pandas.pydata.org/) for table display
-- [Jupyter](https://jupyter.org/) for making it all easy to interact with
+See the [LICENSE](./LICENSE) file for details.
