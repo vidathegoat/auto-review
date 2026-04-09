@@ -14,12 +14,9 @@ from urllib.parse import quote_plus
 from dataclasses import dataclass
 from typing import Optional
 
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+from curl_cffi import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import undetected_chromedriver as uc
 
 # Configuration
 COOKIES_FILE = "cookies.json"
@@ -41,27 +38,8 @@ class KoGSession:
     """Manages authenticated session with kog.tw"""
 
     def __init__(self):
-        self.session = requests.Session()
-        self.session.headers.update({"User-Agent": "KoGTool/1.0"})
-        self._mount_retries()
+        self.session = requests.Session(impersonate="chrome120")
         self._last_request_time = 0.0
-
-    def _mount_retries(self, total=5, backoff=1.5):
-        """Configure automatic retries"""
-        retry = Retry(
-            total=total,
-            connect=total,
-            read=total,
-            status=total,
-            backoff_factor=backoff,
-            status_forcelist=[429, 500, 502, 503, 504],
-            allowed_methods=frozenset(["HEAD", "GET", "OPTIONS", "POST"]),
-            respect_retry_after_header=True,
-            raise_on_status=False,
-        )
-        adapter = HTTPAdapter(max_retries=retry, pool_connections=8, pool_maxsize=8)
-        self.session.mount("https://", adapter)
-        self.session.mount("http://", adapter)
 
     def load_cookies(self, filename=COOKIES_FILE):
         """Load cookies from file"""
@@ -105,13 +83,13 @@ class KoGSession:
 
     def _browser_login(self):
         """Open browser for manual login and capture cookies"""
-        chrome_options = Options()
+        chrome_options = uc.ChromeOptions()
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")
 
-        driver = webdriver.Chrome(options=chrome_options)
+        driver = uc.Chrome(options=chrome_options, version_main=146)
         driver.get(BASE_URL)
         print("Browser opened. Please log in...")
 
@@ -132,7 +110,7 @@ class KoGSession:
                 }
 
                 if session_cookies:
-                    test_session = requests.Session()
+                    test_session = requests.Session(impersonate="chrome120")
                     test_session.cookies.update(session_cookies)
                     try:
                         resp = test_session.get(f"{BASE_URL}/player_edit.php?player=", timeout=10)
@@ -192,6 +170,13 @@ class KoGSession:
         """Scrape player migration data by reference number"""
         url = f"{BASE_URL}/player_migration.php?ref={quote_plus(str(ref_number))}"
         resp = self._get(url)
+
+        os.makedirs("debug_output", exist_ok=True)
+        html_path = os.path.join("debug_output", f"debug_ref_{ref_number}.html")
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(resp.text)
+        print(f"HTML saved to: {html_path}")
+
         soup = BeautifulSoup(resp.text, "html.parser")
 
         headers = soup.find_all("h1")
@@ -499,11 +484,11 @@ def main():
 
     # Copy to clipboard
     try:
-        import pyclip
-        pyclip.copy(message)
+        import pyperclip
+        pyperclip.copy(message)
         print("Message copied to clipboard\n")
     except Exception:
-        print("(Could not copy to clipboard - install pyclip if needed)\n")
+        print("(Could not copy to clipboard - install pyperclip if needed)\n")
 
     return 0
 

@@ -18,3 +18,9 @@ __pycache__/
 env/
 venv/
 ENV/
+
+# Ignore debug HTML output
+debug_output/
+
+# Ignore Claude
+.claude/
