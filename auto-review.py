@@ -4,9 +4,37 @@ KoG Auto Manual Review Tool
 Automates player account verification for kog.tw
 """
 
+import subprocess
+import sys
+
+
+def _bootstrap():
+    required = {
+        "undetected-chromedriver": "undetected_chromedriver",
+        "curl_cffi": "curl_cffi",
+        "beautifulsoup4": "bs4",
+        "pyperclip": "pyperclip",
+    }
+    missing = [pip for pip, mod in required.items() if not _can_import(mod)]
+    if missing:
+        print(f"Installing missing packages: {', '.join(missing)} ...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install"] + missing)
+        print("Done. Continuing...\n")
+
+
+def _can_import(mod):
+    try:
+        __import__(mod)
+        return True
+    except ImportError:
+        return False
+
+
+_bootstrap()
+
+
 import json
 import os
-import sys
 import time
 import ipaddress
 import re
