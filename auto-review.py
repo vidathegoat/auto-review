@@ -52,6 +52,37 @@ BASE_URL = "https://kog.tw"
 MIN_REQUEST_INTERVAL = 1.2
 
 
+def _get_chrome_major_version():
+    """Read the installed Chrome major version from the Windows registry."""
+    if sys.platform == "win32":
+        import winreg
+        candidates = [
+            (winreg.HKEY_CURRENT_USER,  r"SOFTWARE\Google\Chrome\BLBeacon"),
+            (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Google\Chrome\BLBeacon"),
+            (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Wow6432Node\Google\Chrome\BLBeacon"),
+        ]
+        for hive, path in candidates:
+            try:
+                with winreg.OpenKey(hive, path) as key:
+                    version, _ = winreg.QueryValueEx(key, "version")
+                    return int(version.split(".")[0])
+            except Exception:
+                continue
+
+    # Fallback for non-Windows or registry miss
+    for exe in ("google-chrome", "chromium", "chromium-browser",
+                r"C:\Program Files\Google\Chrome\Application\chrome.exe"):
+        try:
+            out = subprocess.run([exe, "--version"], capture_output=True, text=True, timeout=5).stdout
+            match = re.search(r"(\d+)\.", out)
+            if match:
+                return int(match.group(1))
+        except Exception:
+            continue
+
+    return None
+
+
 @dataclass
 class PlayerData:
     """Holds player information"""
@@ -117,7 +148,10 @@ class KoGSession:
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")
 
-        driver = uc.Chrome(options=chrome_options, version_main=146)
+        chrome_version = _get_chrome_major_version()
+        if chrome_version:
+            print(f"Detected Chrome version: {chrome_version}")
+        driver = uc.Chrome(options=chrome_options, version_main=chrome_version)
         driver.get(BASE_URL)
         print("Browser opened. Please log in...")
 
